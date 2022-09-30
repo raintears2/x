@@ -188,12 +188,14 @@ func (p *authenticator) load(ctx context.Context) (m map[string]string, err erro
 	}
 	if p.options.httpLoader != nil {
 		r, er := p.options.httpLoader.Load(ctx)
+		p.options.logger.Debugf("http load url %v: %v", ctx, r)
 		if er != nil {
 			p.options.logger.Warnf("http loader: %v", er)
 		}
 		if auths, _ := p.parseAuths(r); auths != nil {
 			for k, v := range auths {
 				m[k] = v
+				p.options.logger.Debugf("load item %v", v)
 			}
 		}
 	}
